@@ -1,4 +1,6 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class SignupScreen extends StatefulWidget {
   const SignupScreen({super.key});
@@ -23,11 +25,14 @@ class _SignupScreenState extends State<SignupScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
     return Scaffold(
-      backgroundColor: const Color(0xffFFF1F5),
+      backgroundColor: isDark ? Colors.black : const Color(0xffFFF1F5),
 
       appBar: AppBar(
-        backgroundColor: const Color(0xffFFF1F5),
+        backgroundColor:
+            isDark ? Colors.black : const Color(0xffFFF1F5),
         elevation: 0,
       ),
 
@@ -40,8 +45,8 @@ class _SignupScreenState extends State<SignupScreen> {
 
             children: [
               Text(
-                'Create Account',
-                style: TextStyle(
+                'create_account'.tr(),
+                style: GoogleFonts.poppins(
                   fontSize: 34,
                   fontWeight: FontWeight.bold,
                   color: Colors.pink.shade300,
@@ -51,10 +56,13 @@ class _SignupScreenState extends State<SignupScreen> {
               const SizedBox(height: 10),
 
               Text(
-                'Join Glowify today',
-                style: TextStyle(
+                'join_today'.tr(),
+                style: GoogleFonts.poppins(
                   fontSize: 16,
-                  color: Colors.grey.shade700,
+                  color:
+                      isDark
+                          ? Colors.grey.shade300
+                          : Colors.grey.shade700,
                 ),
               ),
 
@@ -62,37 +70,42 @@ class _SignupScreenState extends State<SignupScreen> {
 
               buildTextField(
                 controller: nameController,
-                hint: 'Full Name',
+                hint: 'full_name'.tr(),
+                isDark: isDark,
               ),
 
               const SizedBox(height: 18),
 
               buildTextField(
                 controller: emailController,
-                hint: 'Email',
+                hint: 'email'.tr(),
+                isDark: isDark,
               ),
 
               const SizedBox(height: 18),
 
               buildTextField(
                 controller: phoneController,
-                hint: 'Phone Number',
+                hint: 'phone_number'.tr(),
+                isDark: isDark,
               ),
 
               const SizedBox(height: 18),
 
               buildTextField(
                 controller: passwordController,
-                hint: 'Password',
+                hint: 'password'.tr(),
                 isPassword: true,
+                isDark: isDark,
               ),
 
               const SizedBox(height: 18),
 
               buildTextField(
                 controller: confirmPasswordController,
-                hint: 'Confirm Password',
+                hint: 'confirm_password'.tr(),
                 isPassword: true,
+                isDark: isDark,
               ),
 
               const SizedBox(height: 18),
@@ -101,9 +114,7 @@ class _SignupScreenState extends State<SignupScreen> {
                 children: [
                   Checkbox(
                     value: isChecked,
-
                     activeColor: Colors.pink,
-
                     onChanged: (value) {
                       setState(() {
                         isChecked = value!;
@@ -111,9 +122,15 @@ class _SignupScreenState extends State<SignupScreen> {
                     },
                   ),
 
-                  const Expanded(
+                  Expanded(
                     child: Text(
-                      'I agree to the terms and conditions',
+                      'terms'.tr(),
+                      style: GoogleFonts.poppins(
+                        color:
+                            isDark
+                                ? Colors.white
+                                : Colors.black,
+                      ),
                     ),
                   ),
                 ],
@@ -136,9 +153,9 @@ class _SignupScreenState extends State<SignupScreen> {
                     ),
                   ),
 
-                  child: const Text(
-                    'Send OTP',
-                    style: TextStyle(
+                  child: Text(
+                    'send_otp'.tr(),
+                    style: GoogleFonts.poppins(
                       fontSize: 18,
                       color: Colors.white,
                     ),
@@ -152,7 +169,15 @@ class _SignupScreenState extends State<SignupScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
 
                 children: [
-                  const Text('Already have an account? '),
+                  Text(
+                    '${'already_have_account'.tr()} ',
+                    style: GoogleFonts.poppins(
+                      color:
+                          isDark
+                              ? Colors.white
+                              : Colors.black,
+                    ),
+                  ),
 
                   GestureDetector(
                     onTap: () {
@@ -160,8 +185,8 @@ class _SignupScreenState extends State<SignupScreen> {
                     },
 
                     child: Text(
-                      'Sign In',
-                      style: TextStyle(
+                      'sign_in'.tr(),
+                      style: GoogleFonts.poppins(
                         color: Colors.pink.shade400,
                         fontWeight: FontWeight.bold,
                       ),
@@ -180,16 +205,32 @@ class _SignupScreenState extends State<SignupScreen> {
     required TextEditingController controller,
     required String hint,
     bool isPassword = false,
+    required bool isDark,
   }) {
     return TextField(
       controller: controller,
       obscureText: isPassword,
 
+      style: GoogleFonts.poppins(
+        color: isDark ? Colors.white : Colors.black,
+      ),
+
       decoration: InputDecoration(
         hintText: hint,
 
+        hintStyle: GoogleFonts.poppins(
+          color:
+              isDark
+                  ? Colors.grey.shade400
+                  : Colors.grey,
+        ),
+
         filled: true,
-        fillColor: Colors.white,
+
+        fillColor:
+            isDark
+                ? Colors.grey.shade900
+                : Colors.white,
 
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(14),

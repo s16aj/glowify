@@ -1,4 +1,6 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import 'details_screen.dart';
 
@@ -8,76 +10,68 @@ class HomeScreen extends StatelessWidget {
   final List<Map<String, String>> products = const [
     {
       'image': 'assets/images/product4.jpg',
-      'name': 'Fenty Gloss Set',
+      'name': 'product1_name',
       'price': '\$32',
-      'description':
-          'A shiny lip gloss collection with soft colors and long-lasting glow.',
+      'description': 'product1_desc',
     },
     {
       'image': 'assets/images/product3.jpg',
-      'name': 'Glow Recipe Toner',
+      'name': 'product2_name',
       'price': '\$28',
-      'description':
-          'Hydrating toner that refreshes the skin and gives a natural glow.',
+      'description': 'product2_desc',
     },
     {
       'image': 'assets/images/product2.jpg',
-      'name': 'Hourglass Concealer',
+      'name': 'product3_name',
       'price': '\$36',
-      'description':
-          'Smooth full-coverage concealer for a flawless makeup look.',
+      'description': 'product3_desc',
     },
     {
       'image': 'assets/images/product1.jpg',
-      'name': 'Huda Beauty Set',
+      'name': 'product4_name',
       'price': '\$40',
-      'description':
-          'Luxury lip and cheek collection with soft pink beauty essentials.',
+      'description': 'product4_desc',
     },
   ];
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
     return Scaffold(
-      backgroundColor: const Color(0xffFFF1F5),
-
+      backgroundColor: isDark ? Colors.black : const Color(0xffFFF1F5),
       appBar: AppBar(
-        backgroundColor: const Color(0xffFFF1F5),
+        backgroundColor: isDark ? Colors.black : const Color(0xffFFF1F5),
         elevation: 0,
-
-        title: const Text(
-          'Glowify',
-          style: TextStyle(
-            color: Colors.black,
+        title: Text(
+          'app_name'.tr(),
+          style: GoogleFonts.playfairDisplay(
+            fontSize: 36,
             fontWeight: FontWeight.bold,
+            color: Colors.pink.shade300,
+            letterSpacing: 1.5,
           ),
         ),
-
-        actions: const [
+        actions: [
           Padding(
-            padding: EdgeInsets.only(right: 16),
+            padding: const EdgeInsets.only(right: 16),
             child: Icon(
               Icons.favorite_border,
-              color: Colors.black,
+              color: isDark ? Colors.white : Colors.black,
             ),
           ),
         ],
       ),
-
       body: Padding(
         padding: const EdgeInsets.all(16),
-
         child: GridView.builder(
           itemCount: products.length,
-
-          gridDelegate:
-              const SliverGridDelegateWithFixedCrossAxisCount(
+          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 2,
             crossAxisSpacing: 16,
             mainAxisSpacing: 16,
             childAspectRatio: 0.7,
           ),
-
           itemBuilder: (context, index) {
             final product = products[index];
 
@@ -88,30 +82,26 @@ class HomeScreen extends StatelessWidget {
                   MaterialPageRoute(
                     builder: (_) => DetailsScreen(
                       image: product['image']!,
-                      name: product['name']!,
+                      name: product['name']!.tr(),
                       price: product['price']!,
-                      description: product['description']!,
+                      description: product['description']!.tr(),
                     ),
                   ),
                 );
               },
-
               child: Container(
                 decoration: BoxDecoration(
-                  color: Colors.white,
+                  color: isDark ? Colors.grey.shade900 : Colors.white,
                   borderRadius: BorderRadius.circular(20),
                 ),
-
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-
                   children: [
                     Expanded(
                       child: ClipRRect(
                         borderRadius: const BorderRadius.vertical(
                           top: Radius.circular(20),
                         ),
-
                         child: Image.asset(
                           product['image']!,
                           fit: BoxFit.cover,
@@ -119,30 +109,25 @@ class HomeScreen extends StatelessWidget {
                         ),
                       ),
                     ),
-
                     Padding(
                       padding: const EdgeInsets.all(12),
-
                       child: Column(
-                        crossAxisAlignment:
-                            CrossAxisAlignment.start,
-
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            product['name']!,
-                            style: const TextStyle(
+                            product['name']!.tr(),
+                            style: TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.bold,
+                              color: isDark ? Colors.white : Colors.black,
                             ),
                           ),
-
                           const SizedBox(height: 6),
-
                           Text(
                             product['price']!,
                             style: TextStyle(
                               fontSize: 15,
-                              color: Colors.pink.shade400,
+                              color: Colors.pink.shade300,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
