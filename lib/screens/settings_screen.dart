@@ -1,5 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+
+import '../widgets/primary_button.dart';
 import 'login_screen.dart';
 
 import '../main.dart';
@@ -79,37 +81,30 @@ class _SettingsScreenState extends State<SettingsScreen> {
             ),
             const SizedBox(height: 30),
 
-            ListTile(
-              tileColor: themeIsDark
-                  ? const Color(0xFF2B1A1F)
-                  : Colors.red.shade50,
-
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(14),
-              ),
-
-              leading: Icon(
-                Icons.logout,
-                color: themeIsDark ? Colors.red.shade300 : Colors.red,
-              ),
-
-              title: Text(
-                logoutText,
-                style: TextStyle(
-                  color: themeIsDark
-                      ? Colors.red.shade300
-                      : Colors.red.shade400,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-
-              onTap: () {
+            PrimaryButton(
+              text: logoutText,
+              onPressed: () {
                 Navigator.pushAndRemoveUntil(
                   context,
                   MaterialPageRoute(builder: (_) => const LoginScreen()),
                   (route) => false,
                 );
               },
+              height: 56,
+              backgroundColor: themeIsDark
+                  ? const Color(0xFF2B1A1F)
+                  : Colors.red.shade50,
+              borderRadius: 14,
+              contentAlignment: MainAxisAlignment.start,
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              leading: Icon(
+                Icons.logout,
+                color: themeIsDark ? Colors.red.shade300 : Colors.red,
+              ),
+              textStyle: TextStyle(
+                color: themeIsDark ? Colors.red.shade300 : Colors.red.shade400,
+                fontWeight: FontWeight.bold,
+              ),
             ),
           ],
         ),

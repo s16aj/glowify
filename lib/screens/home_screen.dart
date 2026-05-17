@@ -5,7 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'details_screen.dart';
 
 class HomeScreen extends StatelessWidget {
-  HomeScreen({super.key});
+  const HomeScreen({super.key});
 
   final List<Map<String, String>> products = const [
     {

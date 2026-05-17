@@ -1,6 +1,8 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
+import '../widgets/primary_button.dart';
+
 class DetailsScreen extends StatelessWidget {
   final String image;
   final String name;
@@ -24,9 +26,7 @@ class DetailsScreen extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: isDark ? Colors.black : const Color(0xffFFF1F5),
         elevation: 0,
-        iconTheme: IconThemeData(
-          color: isDark ? Colors.white : Colors.black,
-        ),
+        iconTheme: IconThemeData(color: isDark ? Colors.white : Colors.black),
       ),
       body: Padding(
         padding: const EdgeInsets.all(20),
@@ -71,25 +71,12 @@ class DetailsScreen extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 30),
-            SizedBox(
-              width: double.infinity,
-              height: 55,
-              child: ElevatedButton(
-                onPressed: () {},
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.pink.shade300,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(16),
-                  ),
-                ),
-                child: Text(
-                  'buy_now'.tr(),
-                  style: const TextStyle(
-                    fontSize: 18,
-                    color: Colors.white,
-                  ),
-                ),
-              ),
+            PrimaryButton(
+              text: 'buy_now'.tr(),
+              onPressed: () {},
+              backgroundColor: Colors.pink.shade300,
+              borderRadius: 16,
+              textStyle: const TextStyle(fontSize: 18, color: Colors.white),
             ),
           ],
         ),
