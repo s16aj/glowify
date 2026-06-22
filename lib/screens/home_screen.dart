@@ -7,6 +7,7 @@ import '../models/product.dart';
 import '../providers/favorites_provider.dart';
 import '../services/api_service.dart';
 import 'details_screen.dart';
+import 'favorites_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -30,12 +31,20 @@ class HomeScreen extends StatelessWidget {
           ),
         ),
         actions: [
-          Padding(
+          IconButton(
             padding: const EdgeInsets.only(right: 16),
-            child: Icon(
+            icon: Icon(
               Icons.favorite_border,
               color: isDark ? Colors.white : Colors.black,
             ),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => const FavoritesScreen(),
+                ),
+              );
+            },
           ),
         ],
       ),
@@ -131,21 +140,15 @@ class HomeScreen extends StatelessWidget {
                         ),
                         Padding(
                           padding: const EdgeInsets.all(12),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                product.name,
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold,
-                                  color: isDark ? Colors.white : Colors.black,
-                                ),
-                              ),
-                              
-                            ],
+                          child: Text(
+                            product.name,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                              color: isDark ? Colors.white : Colors.black,
+                            ),
                           ),
                         ),
                       ],
