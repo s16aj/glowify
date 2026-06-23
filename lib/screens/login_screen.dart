@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import '../services/auth_service.dart';
 import '../widgets/app_text_field.dart';
 import '../widgets/primary_button.dart';
 
@@ -16,10 +17,49 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  final TextEditingController phoneController = TextEditingController();
+  final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
 
   final _formKey = GlobalKey<FormState>();
+  final AuthService _authService = AuthService();
+
+  bool isLoading = false;
+
+  Future<void> loginUser() async {
+    if (!_formKey.currentState!.validate()) return;
+
+    setState(() {
+      isLoading = true;
+    });
+
+    try {
+      await _authService.signIn(
+        emailController.text.trim(),
+        passwordController.text.trim(),
+      );
+
+      if (!mounted) return;
+
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (_) => const MainScreen()),
+      );
+    } catch (e) {
+      if (!mounted) return;
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Login failed. Check your email and password.'),
+        ),
+      );
+    }
+
+    if (mounted) {
+      setState(() {
+        isLoading = false;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -55,8 +95,8 @@ class _LoginScreenState extends State<LoginScreen> {
                 const SizedBox(height: 40),
 
                 AppTextField(
-                  controller: phoneController,
-                  hintText: 'phone_number'.tr(),
+                  controller: emailController,
+                  hintText: 'Email',
                   style: GoogleFonts.playfairDisplay(
                     color: isDark ? Colors.white : Colors.black,
                   ),
@@ -66,7 +106,10 @@ class _LoginScreenState extends State<LoginScreen> {
                   fillColor: isDark ? Colors.grey.shade900 : Colors.white,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'Please enter your phone number';
+                      return 'Please enter your email';
+                    }
+                    if (!value.contains('@')) {
+                      return 'Please enter a valid email';
                     }
                     return null;
                   },
@@ -96,15 +139,8 @@ class _LoginScreenState extends State<LoginScreen> {
                 const SizedBox(height: 30),
 
                 PrimaryButton(
-                  text: 'login'.tr(),
-                  onPressed: () {
-                    if (_formKey.currentState!.validate()) {
-                      Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(builder: (_) => const MainScreen()),
-                      );
-                    }
-                  },
+                  text: isLoading ? 'Loading...' : 'login'.tr(),
+                  onPressed: isLoading ? null : loginUser,
                   backgroundColor: Colors.pink.shade300,
                   borderRadius: 14,
                   textStyle: GoogleFonts.playfairDisplay(

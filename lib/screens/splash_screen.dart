@@ -1,10 +1,12 @@
 import 'dart:async';
 
 import 'package:easy_localization/easy_localization.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import 'main_screen.dart';
 import 'onboarding_screen.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -19,15 +21,25 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     super.initState();
 
+    // Show splash for 3 seconds, then check if the user is logged in.
     Timer(
       const Duration(seconds: 3),
       () {
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-            builder: (_) => const OnboardingScreen(),
-          ),
-        );
+        final user = FirebaseAuth.instance.currentUser;
+
+        if (!mounted) return;
+
+        if (user != null) {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (_) => const MainScreen()),
+          );
+        } else {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (_) => const OnboardingScreen()),
+          );
+        }
       },
     );
   }
