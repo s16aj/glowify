@@ -24,7 +24,9 @@ class _LoginScreenState extends State<LoginScreen> {
   final AuthService _authService = AuthService();
 
   bool isLoading = false;
+  bool isGoogleLoading = false;
 
+  // Login using email and password.
   Future<void> loginUser() async {
     if (!_formKey.currentState!.validate()) return;
 
@@ -57,6 +59,38 @@ class _LoginScreenState extends State<LoginScreen> {
     if (mounted) {
       setState(() {
         isLoading = false;
+      });
+    }
+  }
+
+  // Login using Google account.
+  Future<void> loginWithGoogle() async {
+    setState(() {
+      isGoogleLoading = true;
+    });
+
+    try {
+      await _authService.signInWithGoogle();
+
+      if (!mounted) return;
+
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (_) => const MainScreen()),
+      );
+    } catch (e) {
+  if (!mounted) return;
+
+  ScaffoldMessenger.of(context).showSnackBar(
+    SnackBar(
+      content: Text(e.toString()),
+    ),
+  );
+}
+
+    if (mounted) {
+      setState(() {
+        isGoogleLoading = false;
       });
     }
   }
@@ -146,6 +180,40 @@ class _LoginScreenState extends State<LoginScreen> {
                   textStyle: GoogleFonts.playfairDisplay(
                     fontSize: 18,
                     color: Colors.white,
+                  ),
+                ),
+
+                const SizedBox(height: 14),
+
+                // Google Sign-In bonus button.
+                SizedBox(
+                  width: double.infinity,
+                  height: 56,
+                  child: OutlinedButton.icon(
+                    onPressed: isGoogleLoading ? null : loginWithGoogle,
+                    icon: const Text(
+                        'G',
+                        style: TextStyle(
+                          fontSize: 24,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    label: Text(
+                      isGoogleLoading
+                          ? 'Loading...'
+                          : 'Continue with Google',
+                      style: GoogleFonts.playfairDisplay(
+                        fontSize: 17,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    style: OutlinedButton.styleFrom(
+                      foregroundColor: isDark ? Colors.white : Colors.black,
+                      side: BorderSide(color: Colors.pink.shade200),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(14),
+                      ),
+                    ),
                   ),
                 ),
 
