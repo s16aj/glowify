@@ -12,16 +12,15 @@ class ApiService {
 
     final response = await http.get(
       url,
-      headers: {
-        'Authorization': pexelsApiKey,
-      },
+      headers: {'Authorization': pexelsApiKey},
     );
 
     if (response.statusCode == 200) {
       final body = jsonDecode(response.body);
       final List photos = body['photos'];
 
-      return photos.map((item) => Product.fromJson(item)).toList();
+      final products = photos.map((item) => Product.fromJson(item)).toList();
+      return products;
     } else {
       throw Exception('Failed to load beauty photos');
     }

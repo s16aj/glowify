@@ -2,8 +2,8 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:introduction_screen/introduction_screen.dart';
-import 'package:google_fonts/google_fonts.dart';
 
+import '../theme/app_theme.dart';
 import 'login_screen.dart';
 
 class OnboardingScreen extends StatelessWidget {
@@ -14,21 +14,21 @@ class OnboardingScreen extends StatelessWidget {
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     PageDecoration pageDecoration = PageDecoration(
-      titleTextStyle: GoogleFonts.playfairDisplay(
-        color: isDark ? Colors.white : Colors.black,
+      titleTextStyle: AppTheme.titleStyle(
         fontSize: 28,
-        fontWeight: FontWeight.bold,
+        color: AppTheme.textColor(isDark),
       ),
-      bodyTextStyle: GoogleFonts.playfairDisplay(
-        color: isDark ? Colors.grey.shade300 : Colors.grey.shade700,
+      bodyTextStyle: AppTheme.bodyStyle(
+        isDark: isDark,
         fontSize: 16,
+        color: isDark ? Colors.grey.shade300 : Colors.grey.shade700,
       ),
       imagePadding: const EdgeInsets.only(top: 60),
-      pageColor: isDark ? Colors.black : const Color(0xffFFF1F5),
+      pageColor: AppTheme.background(isDark),
     );
 
     return IntroductionScreen(
-      globalBackgroundColor: isDark ? Colors.black : const Color(0xffFFF1F5),
+      globalBackgroundColor: AppTheme.background(isDark),
       pages: [
         PageViewModel(
           title: 'welcome_title'.tr(),
@@ -65,16 +65,12 @@ class OnboardingScreen extends StatelessWidget {
         ),
       ],
       showSkipButton: true,
-      skip: Text(
-        'skip'.tr(),
-        style: GoogleFonts.playfairDisplay(
-          color: isDark ? Colors.white : Colors.black,
-        ),
-      ),
+      skip: Text('skip'.tr(), style: AppTheme.bodyStyle(isDark: isDark)),
       next: const Icon(Icons.arrow_forward, color: Colors.pink),
       done: Text(
         'done'.tr(),
-        style: GoogleFonts.playfairDisplay(
+        style: AppTheme.bodyStyle(
+          isDark: isDark,
           fontWeight: FontWeight.bold,
           color: Colors.pink,
         ),

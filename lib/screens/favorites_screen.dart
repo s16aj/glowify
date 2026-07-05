@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../providers/favorites_provider.dart';
+import '../theme/app_theme.dart';
 import 'details_screen.dart';
 
 class FavoritesScreen extends StatelessWidget {
@@ -13,10 +14,10 @@ class FavoritesScreen extends StatelessWidget {
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Scaffold(
-      backgroundColor: isDark ? Colors.black : const Color(0xffFFF1F5),
+      backgroundColor: AppTheme.background(isDark),
       appBar: AppBar(
         title: const Text('Favorites'),
-        backgroundColor: isDark ? Colors.black : const Color(0xffFFF1F5),
+        backgroundColor: AppTheme.background(isDark),
       ),
       body: favorites.isEmpty
           ? const Center(
@@ -37,14 +38,9 @@ class FavoritesScreen extends StatelessWidget {
                   title: Text(product.name),
                   subtitle: Text(product.photographer),
                   trailing: IconButton(
-                    icon: const Icon(
-                      Icons.favorite,
-                      color: Colors.pink,
-                    ),
+                    icon: const Icon(Icons.favorite, color: Colors.pink),
                     onPressed: () {
-                      context
-                          .read<FavoritesProvider>()
-                          .toggleFavorite(product);
+                      context.read<FavoritesProvider>().toggleFavorite(product);
                     },
                   ),
                   onTap: () {

@@ -1,8 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
-
 import '../services/auth_service.dart';
+import '../theme/app_theme.dart';
 import '../widgets/app_text_field.dart';
 import '../widgets/primary_button.dart';
 
@@ -79,14 +78,14 @@ class _LoginScreenState extends State<LoginScreen> {
         MaterialPageRoute(builder: (_) => const MainScreen()),
       );
     } catch (e) {
-  if (!mounted) return;
+      if (!mounted) return;
 
-  ScaffoldMessenger.of(context).showSnackBar(
-    SnackBar(
-      content: Text(e.toString()),
-    ),
-  );
-}
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Google Sign-In failed. Please try again.'),
+        ),
+      );
+    }
 
     if (mounted) {
       setState(() {
@@ -100,7 +99,7 @@ class _LoginScreenState extends State<LoginScreen> {
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Scaffold(
-      backgroundColor: isDark ? Colors.black : const Color(0xffFFF1F5),
+      backgroundColor: AppTheme.background(isDark),
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(20),
@@ -111,30 +110,28 @@ class _LoginScreenState extends State<LoginScreen> {
               children: [
                 Text(
                   'app_name'.tr(),
-                  style: GoogleFonts.playfairDisplay(
-                    fontSize: 52,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.pink.shade300,
-                    letterSpacing: 2,
-                  ),
+                  style: AppTheme.titleStyle(fontSize: 52, letterSpacing: 2),
                 ),
+
                 const SizedBox(height: 10),
+
                 Text(
                   'welcome_back'.tr(),
-                  style: GoogleFonts.playfairDisplay(
+                  style: AppTheme.bodyStyle(
+                    isDark: isDark,
                     fontSize: 18,
                     color: isDark ? Colors.grey.shade300 : Colors.grey.shade700,
                   ),
                 ),
+
                 const SizedBox(height: 40),
 
                 AppTextField(
                   controller: emailController,
                   hintText: 'Email',
-                  style: GoogleFonts.playfairDisplay(
-                    color: isDark ? Colors.white : Colors.black,
-                  ),
-                  hintStyle: GoogleFonts.playfairDisplay(
+                  style: AppTheme.bodyStyle(isDark: isDark),
+                  hintStyle: AppTheme.bodyStyle(
+                    isDark: isDark,
                     color: isDark ? Colors.grey.shade400 : Colors.grey,
                   ),
                   fillColor: isDark ? Colors.grey.shade900 : Colors.white,
@@ -142,9 +139,11 @@ class _LoginScreenState extends State<LoginScreen> {
                     if (value == null || value.isEmpty) {
                       return 'Please enter your email';
                     }
+
                     if (!value.contains('@')) {
                       return 'Please enter a valid email';
                     }
+
                     return null;
                   },
                 ),
@@ -155,10 +154,9 @@ class _LoginScreenState extends State<LoginScreen> {
                   controller: passwordController,
                   hintText: 'password'.tr(),
                   obscureText: true,
-                  style: GoogleFonts.playfairDisplay(
-                    color: isDark ? Colors.white : Colors.black,
-                  ),
-                  hintStyle: GoogleFonts.playfairDisplay(
+                  style: AppTheme.bodyStyle(isDark: isDark),
+                  hintStyle: AppTheme.bodyStyle(
+                    isDark: isDark,
                     color: isDark ? Colors.grey.shade400 : Colors.grey,
                   ),
                   fillColor: isDark ? Colors.grey.shade900 : Colors.white,
@@ -166,6 +164,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     if (value == null || value.isEmpty) {
                       return 'Please enter your password';
                     }
+
                     return null;
                   },
                 ),
@@ -177,7 +176,8 @@ class _LoginScreenState extends State<LoginScreen> {
                   onPressed: isLoading ? null : loginUser,
                   backgroundColor: Colors.pink.shade300,
                   borderRadius: 14,
-                  textStyle: GoogleFonts.playfairDisplay(
+                  textStyle: AppTheme.bodyStyle(
+                    isDark: isDark,
                     fontSize: 18,
                     color: Colors.white,
                   ),
@@ -192,23 +192,22 @@ class _LoginScreenState extends State<LoginScreen> {
                   child: OutlinedButton.icon(
                     onPressed: isGoogleLoading ? null : loginWithGoogle,
                     icon: const Text(
-                        'G',
-                        style: TextStyle(
-                          fontSize: 24,
-                          fontWeight: FontWeight.bold,
-                        ),
+                      'G',
+                      style: TextStyle(
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
                       ),
+                    ),
                     label: Text(
-                      isGoogleLoading
-                          ? 'Loading...'
-                          : 'Continue with Google',
-                      style: GoogleFonts.playfairDisplay(
+                      isGoogleLoading ? 'Loading...' : 'Continue with Google',
+                      style: AppTheme.bodyStyle(
+                        isDark: isDark,
                         fontSize: 17,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
                     style: OutlinedButton.styleFrom(
-                      foregroundColor: isDark ? Colors.white : Colors.black,
+                      foregroundColor: AppTheme.textColor(isDark),
                       side: BorderSide(color: Colors.pink.shade200),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(14),
@@ -224,9 +223,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   children: [
                     Text(
                       '${'dont_have_account'.tr()} ',
-                      style: GoogleFonts.playfairDisplay(
-                        color: isDark ? Colors.white : Colors.black,
-                      ),
+                      style: AppTheme.bodyStyle(isDark: isDark),
                     ),
                     GestureDetector(
                       onTap: () {
@@ -239,9 +236,10 @@ class _LoginScreenState extends State<LoginScreen> {
                       },
                       child: Text(
                         'sign_up'.tr(),
-                        style: GoogleFonts.playfairDisplay(
-                          color: Colors.pink.shade300,
+                        style: AppTheme.bodyStyle(
+                          isDark: isDark,
                           fontWeight: FontWeight.bold,
+                          color: AppTheme.primaryPink,
                         ),
                       ),
                     ),

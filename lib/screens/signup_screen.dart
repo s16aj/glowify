@@ -1,8 +1,8 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 import '../services/auth_service.dart';
+import '../theme/app_theme.dart';
 import '../widgets/app_text_field.dart';
 import '../widgets/primary_button.dart';
 
@@ -31,9 +31,9 @@ class _SignupScreenState extends State<SignupScreen> {
     if (!_formKey.currentState!.validate()) return;
 
     if (!isChecked) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Please accept the terms')),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text('Please accept the terms')));
       return;
     }
 
@@ -55,16 +55,12 @@ class _SignupScreenState extends State<SignupScreen> {
 
       Navigator.pop(context);
     } catch (e) {
-  if (!mounted) return;
+      if (!mounted) return;
 
-  ScaffoldMessenger.of(context).showSnackBar(
-    SnackBar(
-      content: Text(e.toString()),
-    ),
-  );
-
-  print(e);
-}
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Sign up failed. Please try again.')),
+      );
+    }
 
     if (mounted) {
       setState(() {
@@ -78,9 +74,9 @@ class _SignupScreenState extends State<SignupScreen> {
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Scaffold(
-      backgroundColor: isDark ? Colors.black : const Color(0xffFFF1F5),
+      backgroundColor: AppTheme.background(isDark),
       appBar: AppBar(
-        backgroundColor: isDark ? Colors.black : const Color(0xffFFF1F5),
+        backgroundColor: AppTheme.background(isDark),
         elevation: 0,
       ),
       body: SafeArea(
@@ -93,16 +89,13 @@ class _SignupScreenState extends State<SignupScreen> {
               children: [
                 Text(
                   'create_account'.tr(),
-                  style: GoogleFonts.poppins(
-                    fontSize: 34,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.pink.shade300,
-                  ),
+                  style: AppTheme.titleStyle(fontSize: 34),
                 ),
                 const SizedBox(height: 10),
                 Text(
                   'join_today'.tr(),
-                  style: GoogleFonts.poppins(
+                  style: AppTheme.bodyStyle(
+                    isDark: isDark,
                     fontSize: 16,
                     color: isDark ? Colors.grey.shade300 : Colors.grey.shade700,
                   ),
@@ -112,10 +105,9 @@ class _SignupScreenState extends State<SignupScreen> {
                 AppTextField(
                   controller: nameController,
                   hintText: 'full_name'.tr(),
-                  style: GoogleFonts.poppins(
-                    color: isDark ? Colors.white : Colors.black,
-                  ),
-                  hintStyle: GoogleFonts.poppins(
+                  style: AppTheme.bodyStyle(isDark: isDark),
+                  hintStyle: AppTheme.bodyStyle(
+                    isDark: isDark,
                     color: isDark ? Colors.grey.shade400 : Colors.grey,
                   ),
                   fillColor: isDark ? Colors.grey.shade900 : Colors.white,
@@ -132,10 +124,9 @@ class _SignupScreenState extends State<SignupScreen> {
                 AppTextField(
                   controller: emailController,
                   hintText: 'email'.tr(),
-                  style: GoogleFonts.poppins(
-                    color: isDark ? Colors.white : Colors.black,
-                  ),
-                  hintStyle: GoogleFonts.poppins(
+                  style: AppTheme.bodyStyle(isDark: isDark),
+                  hintStyle: AppTheme.bodyStyle(
+                    isDark: isDark,
                     color: isDark ? Colors.grey.shade400 : Colors.grey,
                   ),
                   fillColor: isDark ? Colors.grey.shade900 : Colors.white,
@@ -155,10 +146,9 @@ class _SignupScreenState extends State<SignupScreen> {
                 AppTextField(
                   controller: phoneController,
                   hintText: 'phone_number'.tr(),
-                  style: GoogleFonts.poppins(
-                    color: isDark ? Colors.white : Colors.black,
-                  ),
-                  hintStyle: GoogleFonts.poppins(
+                  style: AppTheme.bodyStyle(isDark: isDark),
+                  hintStyle: AppTheme.bodyStyle(
+                    isDark: isDark,
                     color: isDark ? Colors.grey.shade400 : Colors.grey,
                   ),
                   fillColor: isDark ? Colors.grey.shade900 : Colors.white,
@@ -176,10 +166,9 @@ class _SignupScreenState extends State<SignupScreen> {
                   controller: passwordController,
                   hintText: 'password'.tr(),
                   obscureText: true,
-                  style: GoogleFonts.poppins(
-                    color: isDark ? Colors.white : Colors.black,
-                  ),
-                  hintStyle: GoogleFonts.poppins(
+                  style: AppTheme.bodyStyle(isDark: isDark),
+                  hintStyle: AppTheme.bodyStyle(
+                    isDark: isDark,
                     color: isDark ? Colors.grey.shade400 : Colors.grey,
                   ),
                   fillColor: isDark ? Colors.grey.shade900 : Colors.white,
@@ -200,10 +189,9 @@ class _SignupScreenState extends State<SignupScreen> {
                   controller: confirmPasswordController,
                   hintText: 'confirm_password'.tr(),
                   obscureText: true,
-                  style: GoogleFonts.poppins(
-                    color: isDark ? Colors.white : Colors.black,
-                  ),
-                  hintStyle: GoogleFonts.poppins(
+                  style: AppTheme.bodyStyle(isDark: isDark),
+                  hintStyle: AppTheme.bodyStyle(
+                    isDark: isDark,
                     color: isDark ? Colors.grey.shade400 : Colors.grey,
                   ),
                   fillColor: isDark ? Colors.grey.shade900 : Colors.white,
@@ -234,9 +222,7 @@ class _SignupScreenState extends State<SignupScreen> {
                     Expanded(
                       child: Text(
                         'terms'.tr(),
-                        style: GoogleFonts.poppins(
-                          color: isDark ? Colors.white : Colors.black,
-                        ),
+                        style: AppTheme.bodyStyle(isDark: isDark),
                       ),
                     ),
                   ],
@@ -247,9 +233,10 @@ class _SignupScreenState extends State<SignupScreen> {
                 PrimaryButton(
                   text: isLoading ? 'Loading...' : 'sign_up'.tr(),
                   onPressed: isLoading ? null : signUpUser,
-                  backgroundColor: Colors.pink.shade300,
+                  backgroundColor: AppTheme.primaryPink,
                   borderRadius: 14,
-                  textStyle: GoogleFonts.poppins(
+                  textStyle: AppTheme.bodyStyle(
+                    isDark: isDark,
                     fontSize: 18,
                     color: Colors.white,
                   ),
@@ -262,9 +249,7 @@ class _SignupScreenState extends State<SignupScreen> {
                   children: [
                     Text(
                       '${'already_have_account'.tr()} ',
-                      style: GoogleFonts.poppins(
-                        color: isDark ? Colors.white : Colors.black,
-                      ),
+                      style: AppTheme.bodyStyle(isDark: isDark),
                     ),
                     GestureDetector(
                       onTap: () {
@@ -272,9 +257,10 @@ class _SignupScreenState extends State<SignupScreen> {
                       },
                       child: Text(
                         'sign_in'.tr(),
-                        style: GoogleFonts.poppins(
-                          color: Colors.pink.shade400,
+                        style: AppTheme.bodyStyle(
+                          isDark: isDark,
                           fontWeight: FontWeight.bold,
+                          color: AppTheme.primaryPink,
                         ),
                       ),
                     ),

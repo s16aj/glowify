@@ -14,10 +14,7 @@ class AuthService {
 
   // Sign in using email and password.
   Future<void> signIn(String email, String password) async {
-    await _auth.signInWithEmailAndPassword(
-      email: email,
-      password: password,
-    );
+    await _auth.signInWithEmailAndPassword(email: email, password: password);
   }
 
   // Sign in using a Google account.
@@ -45,7 +42,10 @@ class AuthService {
 
   // Sign out from both Google and Firebase.
   Future<void> logout() async {
-    await GoogleSignIn().signOut();
+    await GoogleSignIn(
+      clientId:
+          '716525555959-lde5eptn4be3ohchqgng8qt5u14no10u.apps.googleusercontent.com',
+    ).signOut();
     await _auth.signOut();
   }
 

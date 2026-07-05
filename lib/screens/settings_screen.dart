@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
 import '../main.dart';
+import '../theme/app_theme.dart';
 import '../services/auth_service.dart';
 import '../widgets/primary_button.dart';
 import 'login_screen.dart';
@@ -20,19 +21,18 @@ class _SettingsScreenState extends State<SettingsScreen> {
   Widget build(BuildContext context) {
     final themeIsDark = Theme.of(context).brightness == Brightness.dark;
 
-    final logoutText =
-        context.locale.languageCode == 'ar' ? 'تسجيل الخروج' : 'Log Out';
+    final logoutText = context.locale.languageCode == 'ar'
+        ? 'تسجيل الخروج'
+        : 'Log Out';
 
     return Scaffold(
-      backgroundColor: themeIsDark ? Colors.black : const Color(0xffFFF1F5),
+      backgroundColor: AppTheme.background(themeIsDark),
       appBar: AppBar(
         title: Text(
           'settings'.tr(),
-          style: TextStyle(
-            color: themeIsDark ? Colors.white : Colors.black,
-          ),
+          style: TextStyle(color: AppTheme.textColor(themeIsDark)),
         ),
-        backgroundColor: themeIsDark ? Colors.black : const Color(0xffFFF1F5),
+        backgroundColor: AppTheme.background(themeIsDark),
         elevation: 0,
       ),
       body: Padding(
@@ -43,9 +43,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
             SwitchListTile(
               title: Text(
                 'dark_mode'.tr(),
-                style: TextStyle(
-                  color: themeIsDark ? Colors.white : Colors.black,
-                ),
+                style: TextStyle(color: AppTheme.textColor(themeIsDark)),
               ),
               value: themeIsDark,
               activeThumbColor: Colors.pink,
@@ -60,13 +58,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
             ListTile(
               title: Text(
                 'english'.tr(),
-                style: TextStyle(
-                  color: themeIsDark ? Colors.white : Colors.black,
-                ),
+                style: TextStyle(color: AppTheme.textColor(themeIsDark)),
               ),
               trailing: Icon(
                 Icons.language,
-                color: themeIsDark ? Colors.white : Colors.black,
+                color: AppTheme.textColor(themeIsDark),
               ),
               onTap: () {
                 context.setLocale(const Locale('en'));
@@ -77,13 +73,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
             ListTile(
               title: Text(
                 'arabic'.tr(),
-                style: TextStyle(
-                  color: themeIsDark ? Colors.white : Colors.black,
-                ),
+                style: TextStyle(color: AppTheme.textColor(themeIsDark)),
               ),
               trailing: Icon(
                 Icons.language,
-                color: themeIsDark ? Colors.white : Colors.black,
+                color: AppTheme.textColor(themeIsDark),
               ),
               onTap: () {
                 context.setLocale(const Locale('ar'));
