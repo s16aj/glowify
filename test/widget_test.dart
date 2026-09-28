@@ -1,30 +1,29 @@
-// This is a basic Flutter widget test.
-//
-// To perform an interaction with a widget in your test, use the WidgetTester
-// utility in the flutter_test package. For example, you can send tap and scroll
-// gestures. You can also use WidgetTester to find child widgets in the widget
-// tree, read text, and verify that the values of widget properties are correct.
-
-import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:glowify/main.dart';
+import 'package:glowify/models/product.dart';
+import 'package:glowify/providers/favorites_provider.dart';
 
 void main() {
-  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
-    // Build our app and trigger a frame.
-    await tester.pumpWidget(const MyApp());
+  test('FavoritesProvider toggles a product in and out of favorites', () {
+    final product = Product(
+      id: 1,
+      name: 'Glow Serum',
+      photographer: 'Tester',
+      imageLink: 'https://example.com/glow.jpg',
+      description: 'A test product description.',
+    );
 
-    // Verify that our counter starts at 0.
-    expect(find.text('0'), findsOneWidget);
-    expect(find.text('1'), findsNothing);
+    final favorites = FavoritesProvider();
 
-    // Tap the '+' icon and trigger a frame.
-    await tester.tap(find.byIcon(Icons.add));
-    await tester.pump();
+    expect(favorites.favorites, isEmpty);
+    expect(favorites.isFavorite(product), isFalse);
 
-    // Verify that our counter has incremented.
-    expect(find.text('0'), findsNothing);
-    expect(find.text('1'), findsOneWidget);
+    favorites.toggleFavorite(product);
+    expect(favorites.favorites.length, 1);
+    expect(favorites.isFavorite(product), isTrue);
+
+    favorites.toggleFavorite(product);
+    expect(favorites.favorites, isEmpty);
+    expect(favorites.isFavorite(product), isFalse);
   });
 }

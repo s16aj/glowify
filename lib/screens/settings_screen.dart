@@ -90,12 +90,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
             PrimaryButton(
               text: logoutText,
               onPressed: () async {
+                final navigator = Navigator.of(context);
+
                 await _authService.logout();
 
                 if (!mounted) return;
 
-                Navigator.pushAndRemoveUntil(
-                  context,
+                navigator.pushAndRemoveUntil(
                   MaterialPageRoute(builder: (_) => const LoginScreen()),
                   (route) => false,
                 );

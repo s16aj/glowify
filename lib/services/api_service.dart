@@ -2,9 +2,10 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 import '../models/product.dart';
-import 'api_keys.dart';
 
 class ApiService {
+  static const String pexelsApiKey = String.fromEnvironment('PEXELS_API_KEY');
+
   static Future<List<Product>> fetchProducts() async {
     final url = Uri.parse(
       'https://api.pexels.com/v1/search?query=beauty makeup skincare&per_page=30',
